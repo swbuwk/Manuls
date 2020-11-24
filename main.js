@@ -11,7 +11,7 @@ class Game {
         this.manuls_per_click = 1;
         this.mother_power = 1;
         this.golden_manuls = 0;
-        this.farher_max_progress = 100;
+        this.buying = 0;
 
         this.manuls_endings = {
             one: 'манулов',
@@ -25,19 +25,22 @@ class Game {
         };
 
         this.manuls_display = document.querySelector('#manuls');
+        this.golden_manuls_display = document.querySelector('#golden_manuls');
         this.manuls_per_click_display = document.querySelector('#manuls_per_click');
         this.mother_power_display = document.querySelector('#mother_power');
         this.father_progressbar = document.querySelector('#father_click_prog');
         this.father_progress_display = document.querySelector('#father_click_value');
+        this.golden_manuls_display = document.querySelector('#golden_manuls')
 
         this.special_upgrades = [
             {
-                name: 'БЛЯТЬ НЕ РОБАТАЕТ ЗАЛУПА ПОКА-ЧТО',
+                name: 'Улучшение папы манулов',
                 currency: 'золотых манулов',
                 price: 1,
                 id: 'golden',
                 click_handler(game) {
-                    this.farher_max_progress-=1
+                    game.father_progressbar.max = Math.max(10, game.father_progressbar.max-2);
+                    game.father_progress_display.innerText = `${game.father_progressbar.value}/${game.father_progressbar.max}`
                 }
             },
         ];
@@ -114,7 +117,7 @@ class Game {
                 currency: 'манулов',
                 id: 'manulogeddon',
                 click_handler(game) {
-                    console.log('Вы стали манулом')
+                    console.log('Теперь ты манул')
                 },
             },
         ];
@@ -125,7 +128,6 @@ class Game {
         if (this.total_clicks % 100 === 0) {
             this.golden_manuls++;
         }
-        // щас тогда в кнопке надо
     }
 
     normalize_number(n) {
@@ -146,21 +148,30 @@ class Game {
 
     update_counter() {
         const normalized_manuls = this.normalize_number(this.manuls);
+        const normalized_golden_manuls = this.normalize_number(this.golden_manuls);
         const normalized_manuls_per_click = this.normalize_number(
             this.manuls_per_click,
         );
         const normalized_mother_power = this.normalize_number(this.mother_power);
 
         let manuls_ending;
+        let golden_manuls_ending;
+        
         if (this.manuls <= 1000000000) {
             manuls_ending = this.get_ending(this.manuls, this.manuls_endings)
         } else {
             manuls_ending = this.manuls_endings.many;
         }
-
+        
+        if (this.golden_manuls <= 1000000000) {
+            golden_manuls_ending = this.get_ending(this.golden_manuls, this.golden_manuls_endings)
+        } else {
+            golden_manuls_ending = this.golden_manuls_endings.many;
+        }
         this.manuls_display.innerHTML = `У вас ${normalized_manuls} ${manuls_ending}`;
         this.manuls_per_click_display.innerHTML = `Манулов за клик: ${normalized_manuls_per_click}`;
         this.mother_power_display.innerHTML = `Сила мамы манулов: ${normalized_mother_power}`;
+        this.golden_manuls_display.innerHTML =  `У вас ${normalized_golden_manuls} ${golden_manuls_ending}`;
     }
 
     mother_click() {
@@ -172,12 +183,12 @@ class Game {
     father_click() {
         this.gold_manuls_check();
         this.father_progressbar.value++;
-        if (this.father_progressbar.value === this.farher_max_progress) {
+        if (this.father_progressbar.value === this.father_progressbar.max) { 
             this.manuls_per_click += this.manuls;
             this.manuls = 0;
             this.father_progressbar.value = 0;
         }
-        this.father_progress_display.innerText = this.father_progressbar.value;
+        this.father_progress_display.innerText = `${this.father_progressbar.value}/${this.father_progressbar.max}`;
 
         this.update_counter();
     }
@@ -192,12 +203,21 @@ class Game {
         button.setAttribute('id', `${upgrade.id}`);
 
         button.onclick = () => {
-            if (this.manuls >= upgrade.price) {
+            if ((upgrade.currency==='манулов') & (this.manuls >= upgrade.price)) {
                 this.manuls -= upgrade.price;
+                this.buying = 1;
+            } else {
+            if ((upgrade.currency==='золотых манулов') & (this.golden_manuls >= upgrade.price)) {
+                this.golden_manuls -= upgrade.price;
+                this.buying = 1;
+                }
+            }
+            if (this.buying === 1) {
                 upgrade.click_handler(this);
                 this.update_counter();
                 button.innerText = `${upgrade.name}
                         Цена: ${upgrade.price} ${upgrade.currency}`;
+                this.buying = 0;
             } else {
                 button.classList.add('error')
                 setTimeout(() => {
