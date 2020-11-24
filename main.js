@@ -4,15 +4,25 @@ function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
-// http://109.254.44.25:53235/ - для себя
-// https://b854b7a49ba6.ngrok.io/ - для всех
-
 class Game {
     constructor() {
         this.manuls = 0;
         this.total_clicks = 0;
         this.manuls_per_click = 1;
         this.mother_power = 1;
+        this.golden_manuls = 0;
+        this.farher_max_progress = 100;
+
+        this.manuls_endings = {
+            one: 'манулов',
+            two: 'манула',
+            many: 'манулов',
+        };
+        this.golden_manuls_endings = {
+            one: 'золотой манул',
+            two: 'золотых манула',
+            many: 'золотых манулов',
+        };
 
         this.manuls_display = document.querySelector('#manuls');
         this.manuls_per_click_display = document.querySelector('#manuls_per_click');
@@ -22,9 +32,13 @@ class Game {
 
         this.special_upgrades = [
             {
-                name: 'Улучшение папы манулов',
+                name: 'БЛЯТЬ НЕ РОБАТАЕТ ЗАЛУПА ПОКА-ЧТО',
                 currency: 'золотых манулов',
                 price: 1,
+                id: 'golden',
+                click_handler(game) {
+                    this.farher_max_progress-=1
+                }
             },
         ];
         this.upgrades = [
@@ -33,6 +47,7 @@ class Game {
                 currency: 'манулов',
                 price: 10,
                 price_incr: 10,
+                id: 'plusone',
                 click_handler(game) {
                     game.manuls_per_click++;
                     this.price += this.price_incr;
@@ -43,6 +58,7 @@ class Game {
                 currency: 'манулов',
                 price: 100,
                 price_incr: 100,
+                id: 'plusten',
                 click_handler(game) {
                     game.manuls_per_click += 10;
                     this.price += this.price_incr;
@@ -52,12 +68,13 @@ class Game {
                 name: 'Мама манулов',
                 price: 100000,
                 currency: 'манулов',
+                id: 'mom',
                 click_handler(game) {
                     const button = document.querySelector('#manuls_mother');
                     button.onclick = game.mother_click.bind(game);
                     button.classList.remove('hidden');
                     game.mother_power_display.classList.remove('hidden');
-                    const upgrade_button = document.querySelector('#upgrade-button-2');
+                    const upgrade_button = document.querySelector('#mom');
 
                     game.upgrades.push({
                         name: '+1 к силе мамы манулов',
@@ -71,7 +88,7 @@ class Game {
                         },
                     });
 
-                    const mother_up = game.create_upgrade(game.upgrades.length - 1);
+                    const mother_up = game.create_upgrade(game.upgrades, game.upgrades.length - 1);
                     insertAfter(mother_up, upgrade_button);
                     upgrade_button.remove();
                 },
@@ -80,24 +97,35 @@ class Game {
                 name: 'Папа манулов',
                 price: 1000000,
                 currency: 'манулов',
+                id: 'dad',
                 click_handler(game) {
                     const button = document.querySelector('.father');
                     button.onclick = game.father_click.bind(game);
                     button.classList.remove('hidden');
-                    const upgrade_button = document.querySelector('#upgrade-button-3');
+                    const upgrade_button = document.querySelector('#dad');
                     upgrade_button.remove();
                     document.querySelector('#tab-selector').classList.remove('hidden');
+                    this.total_clicks = 0;
                 },
             },
             {
                 name: 'Манулогеддон',
                 price: 1e100,
                 currency: 'манулов',
+                id: 'manulogeddon',
                 click_handler(game) {
-                    console.log('пиздец');
+                    console.log('Вы стали манулом')
                 },
             },
         ];
+    }
+
+    gold_manuls_check() {
+        this.total_clicks++;
+        if (this.total_clicks % 100 === 0) {
+            this.golden_manuls++;
+        }
+        // щас тогда в кнопке надо
     }
 
     normalize_number(n) {
@@ -117,28 +145,17 @@ class Game {
     }
 
     update_counter() {
-        const manuls_endings = {
-            one: 'манулов',
-            two: 'манула',
-            many: 'манулов',
-        };
-        const golden_manuls_endings = {
-            one: 'золотой манул',
-            two: 'золотых манула',
-            many: 'золотых манулов',
-        };
-        const normalized_manuls = this.normalize_number(this.manuls, manuls_endings);
+        const normalized_manuls = this.normalize_number(this.manuls);
         const normalized_manuls_per_click = this.normalize_number(
             this.manuls_per_click,
-            manuls_endings
         );
-        const normalized_mother_power = this.normalize_number(this.mother_power, manuls_endings);
+        const normalized_mother_power = this.normalize_number(this.mother_power);
 
         let manuls_ending;
         if (this.manuls <= 1000000000) {
-            manuls_ending = this.get_ending(this.manuls);
+            manuls_ending = this.get_ending(this.manuls, this.manuls_endings)
         } else {
-            manuls_ending = manuls_endings.many;
+            manuls_ending = this.manuls_endings.many;
         }
 
         this.manuls_display.innerHTML = `У вас ${normalized_manuls} ${manuls_ending}`;
@@ -147,15 +164,15 @@ class Game {
     }
 
     mother_click() {
-        this.total_clicks++;
+        this.gold_manuls_check();
         this.manuls_per_click += this.mother_power;
         this.update_counter();
     }
 
     father_click() {
-        this.total_clicks++;
+        this.gold_manuls_check();
         this.father_progressbar.value++;
-        if (this.father_progressbar.value === 100) {
+        if (this.father_progressbar.value === this.farher_max_progress) {
             this.manuls_per_click += this.manuls;
             this.manuls = 0;
             this.father_progressbar.value = 0;
@@ -172,7 +189,7 @@ class Game {
         button.innerText = `${upgrade.name}
             Цена: ${this.normalize_number(upgrade.price)} ${upgrade.currency}`;
         button.classList.add('manul-button', 'click-effect');
-        button.setAttribute('id', `upgrade-button-${index}`);
+        button.setAttribute('id', `${upgrade.id}`);
 
         button.onclick = () => {
             if (this.manuls >= upgrade.price) {
@@ -181,6 +198,11 @@ class Game {
                 this.update_counter();
                 button.innerText = `${upgrade.name}
                         Цена: ${upgrade.price} ${upgrade.currency}`;
+            } else {
+                button.classList.add('error')
+                setTimeout(() => {
+                    button.classList.remove('error')
+                }, 200);
             }
         };
         li.appendChild(button);
@@ -196,20 +218,14 @@ class Game {
         }
 
         document.querySelector('#main-button').onclick = () => {
-            this.total_clicks++;
+            this.gold_manuls_check();
             this.manuls += this.manuls_per_click;
             this.update_counter();
-            console.log(this.total_clicks);
         };
 
         const special_upgrades_list = document.querySelector('#special-upgrades-list');
 
         for (const i in this.special_upgrades) {
-            /* 
-            крч у нас там создаются айди у кнопок
-            и их надо как-то сделать уникальными 
-            вопрос как
-            */
             const li = this.create_upgrade(this.special_upgrades, i);
             special_upgrades_list.appendChild(li);
         }
@@ -225,11 +241,12 @@ class Game {
                 });
             };
         });
+
+        this.update_counter();
     }
 }
 
 const mygame = new Game();
-mygame.update_counter();
 
 window.onload = () => {
     mygame.load();

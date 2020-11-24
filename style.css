@@ -12,7 +12,7 @@ body {
 }
 
 .centrify {
-    display: flex; /* для центрирования */
+    display: flex; 
     flex-flow: column;
     align-items: center;
 }
@@ -86,12 +86,31 @@ h1 {
     height: 40px !important;
     margin-left: 10px;
 }
+
 .manul-button {
     width: 300px;
     height: 50px;
     border: 2px solid black;
     margin-bottom: 5px;
 }
+
+.error {
+    animation: test .2s ;
+}
+
+@keyframes test {
+    0% {
+        background-color: red;
+    }
+    10%{
+        background-color: rgba(255, 0, 0, 0.5);
+    }
+    100%{
+        background-color: white;
+    }
+} 
+/* бля а как сделать чтобы такое было только при недостатке средств а сука хмм */
+
 
 .click-effect:active {
     opacity: 0.75;
