@@ -229,7 +229,6 @@ class Game {
 }
 
 const mygame = new Game();
-mygame.manuls = 1e50; // пупи пупи пупи)))))))))
 mygame.update_counter();
 
 window.onload = () => {
