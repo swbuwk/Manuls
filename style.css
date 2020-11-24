@@ -1,0 +1,104 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.centrify {
+    display: flex; /* для центрирования */
+    flex-flow: column;
+    align-items: center;
+}
+
+.bigbutton {
+    width: 225px;
+    height: 180px;
+    border: 2px solid black;
+    background-size: 100%;
+}
+
+.bigbutton:not(:last-child) {
+    margin-right: 10px;
+}
+
+.manul-big-button {
+    background-image: url('https://sun1.48276.userapi.com/K9JvvS0K-EeaU4NVDcYEyMcVkckw4IUyr41iqg/OyOU3GnLyuw.jpg');
+}
+
+.manul-mother-button {
+    background: center/120%
+        url('https://sun9-44.userapi.com/FciQa84-JlPLkxtC2GCq-vPpqEU3V_0CsHCjRw/h9VQSpc7m8A.jpg');
+}
+
+.manul-father-button {
+    background: center/120%
+        url('https://sun9-69.userapi.com/impf/SLJgRTuF7PJ8HXDqMX0_e3aVNJrNY00KkM1m2g/0CHeD_y8OF4.jpg?size=630x420&quality=96&proxy=1&sign=8ea7faa5e18b480e0c91e7704600715b');
+}
+
+.father_progressbar {
+    margin-top: 3px;
+    display: flex;
+    justify-content: center;
+}
+
+#father_click_value {
+    margin-right: 10px;
+}
+
+#main-tab {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+}
+
+.buttons {
+    display: flex;
+    margin-top: 10px;
+}
+
+h1 {
+    margin-bottom: 0;
+}
+
+.border {
+    border-bottom: 2px solid black;
+}
+
+.tab-selector {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    height: 60px;
+    width: 100%;
+    border-bottom: 2px solid black;
+}
+
+.tab-select {
+    width: 120px !important;
+    height: 40px !important;
+    margin-left: 10px;
+}
+.manul-button {
+    width: 300px;
+    height: 50px;
+    border: 2px solid black;
+    margin-bottom: 5px;
+}
+
+.click-effect:active {
+    opacity: 0.75;
+    padding-top: 3px;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+}

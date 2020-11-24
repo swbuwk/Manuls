@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Манулы</title>
+    </head>
+
+    <body>
+        <div class="centrify">
+            <div class="tab-selector hidden" id="tab-selector">
+                <button class="tab-select manul-button click-effect" name="main-tab">
+                    На главную
+                </button>
+                <button class="tab-select manul-button click-effect" name="click-upgrades-tab">
+                    В апгрейды
+                </button>
+            </div>
+
+            <h1>
+                <span id="manuls">У вас 0 манулов</span>
+                <br />
+                <span id="manuls_per_click">Манулов за клик: 1</span>
+                <br />
+                <span id="mother_power" class="hidden">Сила мамы манулов: 1</span>
+            </h1>
+
+            <hr
+                style="
+                    width: 100%;
+                    border: 1px solid black;
+                    border-left: 0;
+                    border-right: 0;
+                    margin-top: 20px;
+                "
+            />
+
+            <div id="main-tab" class="tab">
+                <div class="centrify" id="main_buttons">
+                    <div class="buttons">
+                        <button
+                            class="bigbutton manul-big-button click-effect"
+                            id="main-button"
+                        ></button>
+                        <button
+                            class="bigbutton manul-mother-button click-effect hidden"
+                            id="manuls_mother"
+                        ></button>
+                        <div class="father hidden">
+                            <button
+                                class="bigbutton manul-father-button click-effect"
+                                id="manuls_father"
+                            ></button>
+                            <div class="father_progressbar">
+                                <span id="father_click_value">1</span>
+                                <progress max="100" value="1" id="father_click_prog"></progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <ul id="upgrades-list" class="list"></ul>
+                </div>
+            </div>
+
+            <div id="click-upgrades-tab" class="tab hidden centrify">
+                <h1>
+                    У вас 0 Золотых манулов
+                </h1>
+                <span>1 Золотой манул = 100 кликов</span>
+
+                <div id="special-upgrades-list" class="list"></div>
+            </div>
+        </div>
+        <script src="main.js"></script>
+    </body>
+</html>
