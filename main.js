@@ -1,5 +1,5 @@
 'use strict';
-
+// го как создавать окна ща я чето хотел 
 function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
@@ -12,6 +12,9 @@ class Game {
         this.mother_power = 1;
         this.golden_manuls = 0;
         this.buying = 0;
+        this.father_power=0.1
+        this.grandma_power=0.0002
+        this.clicks_to_gold_manul=100
 
         this.manuls_endings = {
             one: 'манулов',
@@ -28,19 +31,48 @@ class Game {
         this.golden_manuls_display = document.querySelector('#golden_manuls');
         this.manuls_per_click_display = document.querySelector('#manuls_per_click');
         this.mother_power_display = document.querySelector('#mother_power');
+        this.father_power_display = document.querySelector('#father_power');
         this.father_progressbar = document.querySelector('#father_click_prog');
         this.father_progress_display = document.querySelector('#father_click_value');
-        this.golden_manuls_display = document.querySelector('#golden_manuls')
+        this.golden_manuls_display = document.querySelector('#golden_manuls');
+        this.clicks_to_gold_manul_display = document.querySelector('#clicks-to-gold-manul');
 
         this.special_upgrades = [
             {
                 name: 'Улучшение папы манулов',
                 currency: 'золотых манулов',
+                hidden: false,
+                desc: 'Папа манулов будет требовать на 2 клика меньше для активации эффекта',
                 price: 1,
-                id: 'golden',
+                id: 'father_gold_up',
                 click_handler(game) {
                     game.father_progressbar.max = Math.max(10, game.father_progressbar.max-2);
                     game.father_progress_display.innerText = `${game.father_progressbar.value}/${game.father_progressbar.max}`
+                }
+            },
+            {
+                name: 'Улучшение добычи золотых',
+                currency: 'золотых манулов',
+                hidden: false,
+                desc: 'Теперь золотой манул будет даваться раз в 75 кликов',
+                price: 3,
+                id: 'golden_manuls_up',
+                click_handler(game) {
+                    game.clicks_to_gold_manul = 75
+                    game.update_counter()
+                    document.querySelector('#golden_manuls_up').remove()
+                }
+            },
+            {
+                name: 'Улучшение бабушки манулов',
+                currency: 'золотых манулов',
+                hidden: true,
+                desc: 'Бабушка манулов будет увеличивать процент не на 0.02%, а на 0.05% (Можно купить 1 раз)',
+                price: 5,
+                id: 'grandma_golden_up',
+                click_handler(game) {
+                    game.grandma_power=0.0005;
+                    document.querySelector('#grandma_golden_up').remove()
                 }
             },
         ];
@@ -48,6 +80,8 @@ class Game {
             {
                 name: '+1 манул за клик',
                 currency: 'манулов',
+                hidden: false,
+                desc: 'ОоОоО дАаАа, ТеПеРь МаНуЛоВ зА кЛиК БуДеТ нА оДиН бОлЬшЕ',
                 price: 10,
                 price_incr: 10,
                 id: 'plusone',
@@ -59,6 +93,8 @@ class Game {
             {
                 name: '+10 манулов за клик',
                 currency: 'манулов',
+                hidden: false,
+                desc: 'ОоОоОо, ТеПеРь На 10 БоЛьШе!1!',
                 price: 100,
                 price_incr: 100,
                 id: 'plusten',
@@ -70,7 +106,9 @@ class Game {
             {
                 name: 'Мама манулов',
                 price: 100000,
+                desc: 'Забудьте о трате манулов ради манулов за клики, теперь это бесплатно (Можно купить 1 раз)',
                 currency: 'манулов',
+                hidden: false,
                 id: 'mom',
                 click_handler(game) {
                     const button = document.querySelector('#manuls_mother');
@@ -78,28 +116,30 @@ class Game {
                     button.classList.remove('hidden');
                     game.mother_power_display.classList.remove('hidden');
                     const upgrade_button = document.querySelector('#mom');
-
-                    game.upgrades.push({
-                        name: '+1 к силе мамы манулов',
-                        price: 5000,
-                        price_incr: 5000,
-                        currency: 'манулов',
-                        click_handler(game_) {
-                            game_.mother_power++;
-                            this.price += this.price_incr;
-                            game_.update_counter();
-                        },
-                    });
-
-                    const mother_up = game.create_upgrade(game.upgrades, game.upgrades.length - 1);
-                    insertAfter(mother_up, upgrade_button);
+                    document.querySelector('#mom_power').classList.remove('hidden');
                     upgrade_button.remove();
+                },
+            },
+            {
+                name: '+1 к силе мамы манулов',
+                price: 5000,
+                desc: 'Учеличивает силу мамы манулов, чтобы мама давала больше манулов за клик',
+                price_incr: 5000,
+                currency: 'манулов',
+                hidden: true,
+                id: 'mom_power',
+                click_handler(game_) {
+                    game_.mother_power++;
+                    this.price += this.price_incr;
+                    game_.update_counter();
                 },
             },
             {
                 name: 'Папа манулов',
                 price: 1000000,
+                desc: 'Тратит всех ваших манулов, однако превращает процент из них в манулов за клик (Можно купить 1 раз)',
                 currency: 'манулов',
+                hidden: false,
                 id: 'dad',
                 click_handler(game) {
                     const button = document.querySelector('.father');
@@ -107,13 +147,35 @@ class Game {
                     button.classList.remove('hidden');
                     const upgrade_button = document.querySelector('#dad');
                     upgrade_button.remove();
+                    document.querySelector('#plusone').remove()
+                    document.querySelector('#plusten').remove()
                     document.querySelector('#tab-selector').classList.remove('hidden');
+                    document.querySelector('#grandma').classList.remove('hidden');
                     this.total_clicks = 0;
                 },
             },
             {
+                name: 'Бабушка манулов',
+                price: 1e30,
+                desc: 'Улучшает папу манулов, повышая процент отдаваемых им манулов',
+                currency: 'манулов',
+                hidden: true,
+                id: 'grandma',
+                click_handler(game) {
+                    const button = document.querySelector('#manuls_grandma');
+                    button.onclick = game.grandma_click.bind(game);
+                    button.classList.remove('hidden');
+                    game.father_power_display.classList.remove('hidden');
+                    const upgrade_button = document.querySelector('#grandma');
+                    document.querySelector('#grandma_golden_up').classList.remove('hidden')
+                    document.querySelector('#mom_power').classList.add('hidden')
+                    upgrade_button.remove();
+                }
+            },
+            {
                 name: 'Манулогеддон',
                 price: 1e100,
+                desc: '"Тсс... это секрет.."',
                 currency: 'манулов',
                 id: 'manulogeddon',
                 click_handler(game) {
@@ -125,7 +187,7 @@ class Game {
 
     gold_manuls_check() {
         this.total_clicks++;
-        if (this.total_clicks % 100 === 0) {
+        if (this.total_clicks % this.clicks_to_gold_manul === 0) {
             this.golden_manuls++;
         }
     }
@@ -153,6 +215,7 @@ class Game {
             this.manuls_per_click,
         );
         const normalized_mother_power = this.normalize_number(this.mother_power);
+        const normalized_father_power = (100*this.father_power).toFixed(2);
 
         let manuls_ending;
         let golden_manuls_ending;
@@ -172,6 +235,8 @@ class Game {
         this.manuls_per_click_display.innerHTML = `Манулов за клик: ${normalized_manuls_per_click}`;
         this.mother_power_display.innerHTML = `Сила мамы манулов: ${normalized_mother_power}`;
         this.golden_manuls_display.innerHTML =  `У вас ${normalized_golden_manuls} ${golden_manuls_ending}`;
+        this.father_power_display.innerHTML = `Сила папы манулов: ${normalized_father_power}%`
+        this.clicks_to_gold_manul_display.innerHTML = `1 Золотой манул = ${this.clicks_to_gold_manul} кликов`
     }
 
     mother_click() {
@@ -184,12 +249,17 @@ class Game {
         this.gold_manuls_check();
         this.father_progressbar.value++;
         if (this.father_progressbar.value === this.father_progressbar.max) { 
-            this.manuls_per_click += this.manuls;
+            this.manuls_per_click += this.father_power*this.manuls;
             this.manuls = 0;
             this.father_progressbar.value = 0;
         }
         this.father_progress_display.innerText = `${this.father_progressbar.value}/${this.father_progressbar.max}`;
 
+        this.update_counter();
+    }
+
+    grandma_click() {
+        this.father_power+=this.grandma_power
         this.update_counter();
     }
 
@@ -200,20 +270,43 @@ class Game {
         button.innerText = `${upgrade.name}
             Цена: ${this.normalize_number(upgrade.price)} ${upgrade.currency}`;
         button.classList.add('manul-button', 'click-effect');
+        if (upgrade.hidden) button.classList.add('hidden');
         button.setAttribute('id', `${upgrade.id}`);
 
+        button.onmouseover = () => {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip'
+            const buttonRect = button.getBoundingClientRect()
+            const x = buttonRect.x; 
+            const y = buttonRect.y;
+            tooltip.innerHTML = upgrade.desc
+            tooltip.style.left = `${buttonRect.width + x + 2}px`
+            tooltip.style.top = `${y}px`
+            document.body.appendChild(tooltip);
+        }
+
+        button.onmouseout = () => {
+            document.querySelectorAll('.tooltip').forEach(t => t.remove())
+        }
+
         button.onclick = () => {
-            if ((upgrade.currency==='манулов') & (this.manuls >= upgrade.price)) {
-                this.manuls -= upgrade.price;
-                this.buying = 1;
-            } else {
-            if ((upgrade.currency==='золотых манулов') & (this.golden_manuls >= upgrade.price)) {
-                this.golden_manuls -= upgrade.price;
-                this.buying = 1;
-                }
+
+            let currency;
+            switch (upgrade.currency) {
+                case 'манулов':
+                    currency = 'manuls';
+                    break;
+                case 'золотых манулов': 
+                    currency = 'golden_manuls';
+                    break;
+                default:
+                    currency = 'manuls';
+                    break;
             }
-            if (this.buying === 1) {
-                upgrade.click_handler(this);
+            
+            if (this[currency] >= upgrade.price) {
+                this[currency] -= upgrade.price;
+                upgrade.click_handler(this); 
                 this.update_counter();
                 button.innerText = `${upgrade.name}
                         Цена: ${upgrade.price} ${upgrade.currency}`;
@@ -225,7 +318,7 @@ class Game {
                 }, 200);
             }
         };
-        li.appendChild(button);
+        li.appendChild(button); // крч думаю при лоаде добавить иф чтобы все с  dхиддаc смотри
         return li;
     }
 

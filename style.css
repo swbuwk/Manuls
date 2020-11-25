@@ -42,6 +42,11 @@ body {
         url('https://sun9-69.userapi.com/impf/SLJgRTuF7PJ8HXDqMX0_e3aVNJrNY00KkM1m2g/0CHeD_y8OF4.jpg?size=630x420&quality=96&proxy=1&sign=8ea7faa5e18b480e0c91e7704600715b');
 }
 
+.manul-grandma-button {
+    background: center/120%
+        url('https://sun9-75.userapi.com/impg/LMLS1NGyspV9b0Wfm8W7w0wiiRPK1Wu0kP_5Vw/tOWC7bIH5W4.jpg?size=1200x877&quality=96&proxy=1&sign=71d551c054f3b7c6bc1d86406903b542');
+}
+
 .father_progressbar {
     margin-top: 3px;
     display: flex;
@@ -112,11 +117,19 @@ h1 {
 
 
 .click-effect:active {
-    opacity: 0.75;
+    opacity: 0.9;
     padding-top: 3px;
 }
 
 .list {
     list-style: none;
     padding: 0;
+}
+
+.tooltip {
+    position: fixed;
+    border: 2px solid black; 
+    background-color: #EFEFEF;
+    padding: 15px; 
+    width: 200px;
 }
