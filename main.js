@@ -61,6 +61,7 @@ class Game {
                     game.clicks_to_gold_manul = 75
                     game.update_counter()
                     document.querySelector('#golden_manuls_up').remove()
+                    document.querySelectorAll('.tooltip').forEach(t => t.remove())
                 }
             },
             {
@@ -73,6 +74,7 @@ class Game {
                 click_handler(game) {
                     game.grandma_power=0.0005;
                     document.querySelector('#grandma_golden_up').remove()
+                    document.querySelectorAll('.tooltip').forEach(t => t.remove())
                 }
             },
         ];
@@ -118,6 +120,7 @@ class Game {
                     const upgrade_button = document.querySelector('#mom');
                     document.querySelector('#mom_power').classList.remove('hidden');
                     upgrade_button.remove();
+                    document.querySelectorAll('.tooltip').forEach(t => t.remove())
                 },
             },
             {
@@ -152,12 +155,13 @@ class Game {
                     document.querySelector('#tab-selector').classList.remove('hidden');
                     document.querySelector('#grandma').classList.remove('hidden');
                     this.total_clicks = 0;
+                    document.querySelectorAll('.tooltip').forEach(t => t.remove())
                 },
             },
             {
                 name: 'Бабушка манулов',
                 price: 1e30,
-                desc: 'Улучшает папу манулов, повышая процент отдаваемых им манулов',
+                desc: 'Улучшает папу манулов, повышая процент отдаваемых им манулов (Можно купить 1 раз)',
                 currency: 'манулов',
                 hidden: true,
                 id: 'grandma',
