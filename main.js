@@ -38,6 +38,7 @@ class Game {
         this.manuls_per_click_display = document.querySelector('#manuls_per_click');
         this.mother_power_display = document.querySelector('#mother_power');
         this.father_power_display = document.querySelector('#father_power');
+        this.super_manuls_display = document.querySelector('#super_manuls');
         this.father_progressbar = document.querySelector('#father_click_prog');
         this.father_progress_display = document.querySelector('#father_click_value');
         this.grandpa_progressbar = document.querySelector('#grandpa_click_prog');
@@ -262,7 +263,6 @@ class Game {
                 currency: 'манулов',
                 id: 'manulogeddon',
                 click_handler(game) {
-                    game.load()
                     game.super_manuls++
                     document.querySelector('#super_manuls').classList.remove('hidden')
                     game.update_counter();
@@ -296,6 +296,7 @@ class Game {
 
     update_counter() {
         const normalized_manuls = Math.round(this.normalize_number(this.manuls));
+        const normalized_super_manuls = Math.round(this.normalize_number(this.super_manuls));
         const normalized_golden_manuls = this.normalize_number(this.golden_manuls);
         const normalized_manuls_per_click = Math.round(this.normalize_number(this.manuls_per_click));
         const normalized_mother_power = this.normalize_number(this.mother_power);
@@ -312,12 +313,19 @@ class Game {
         }
 
         let manuls_ending;
+        let super_manuls_ending;
         let golden_manuls_ending;
         
         if (this.manuls <= 1000000000) {
             manuls_ending = this.get_ending(this.manuls, this.manuls_endings)
         } else {
             manuls_ending = this.manuls_endings.many;
+        }
+
+        if (this.super_manuls <= 1000000000) {
+            super_manuls_ending = this.get_ending(this.super_manuls, this.manuls_endings)
+        } else {
+            super_manuls_ending = this.manuls_endings.many;
         }
         
         if (this.golden_manuls <= 1000000000) {
@@ -326,6 +334,7 @@ class Game {
             golden_manuls_ending = this.golden_manuls_endings.many;
         }
         this.manuls_display.innerHTML = `У вас ${normalized_manuls} ${manuls_ending}`;
+        this.super_manuls_display.innerHTML = `У вас ${normalized_super_manuls} dead inside ${super_manuls_ending}`;
         this.manuls_per_click_display.innerHTML = `Манулов за клик: ${normalized_manuls_per_click}`;
         this.mother_power_display.innerHTML = `Сила мамы манулов: ${normalized_mother_power}`;
         this.golden_manuls_display.innerHTML =  `У вас ${normalized_golden_manuls} ${golden_manuls_ending}`;
