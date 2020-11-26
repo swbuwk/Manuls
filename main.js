@@ -295,10 +295,10 @@ class Game {
     }
 
     update_counter() {
-        const normalized_manuls = Math.round(this.normalize_number(this.manuls));
-        const normalized_super_manuls = Math.round(this.normalize_number(this.super_manuls));
+        const normalized_manuls = this.normalize_number(this.manuls);
+        const normalized_super_manuls = this.normalize_number(this.super_manuls);
         const normalized_golden_manuls = this.normalize_number(this.golden_manuls);
-        const normalized_manuls_per_click = Math.round(this.normalize_number(this.manuls_per_click));
+        const normalized_manuls_per_click = this.normalize_number(this.manuls_per_click);
         const normalized_mother_power = this.normalize_number(this.mother_power);
         const normalized_father_power = (100*this.father_power).toFixed(2);
         const normalized_grandpa_buff = this.normalize_number(this.grandpa_buff_x)
