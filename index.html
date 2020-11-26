@@ -19,6 +19,8 @@
             </div>
 
             <h1>
+                <span id="super_manuls" class="hidden">У вас 0 dead inside манулов</span>
+                <br />
                 <span id="manuls">У вас 0 манулов</span>
                 <br />
                 <span id="manuls_per_click">Манулов за клик: 1</span>
@@ -26,6 +28,8 @@
                 <span id="mother_power" class="hidden">Сила мамы манулов: 1</span>
                 <br />
                 <span id="father_power" class="hidden">Сила папы манулов: 10%</span>
+                <br />
+                <span id="grandpa_buff" class="hidden">Множитель деда манулов: Выключен</span>
             </h1>
 
             <hr
@@ -63,6 +67,16 @@
                             class="bigbutton manul-grandma-button click-effect hidden"
                             id="manuls_grandma"
                         ></button>
+                        <div class="granddad hidden">
+                            <button
+                                class="bigbutton manul-grandpa-button click-effect"
+                                id="manuls_grandpa"
+                            ></button>
+                            <div class="grandpa_progressbar">
+                                <span id="grandpa_click_value">0/100</span>
+                                <progress class="grandpa_prog" id="grandpa_click_prog" max="100" value="1"></progress>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div>
