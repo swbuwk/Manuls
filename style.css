@@ -1,153 +1,157 @@
 html,
 body {
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .hidden {
-  display: none !important;
+    display: none !important;
 }
 
 .centrify {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
 }
 
 .bigbutton {
-  width: 225px;
-  height: 180px;
-  border: 2px solid black;
-  background-size: 100%;
+    width: 225px;
+    height: 180px;
+    border: 2px solid black;
+    background-size: 100%;
 }
 
 .bigbutton:not(:last-child) {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .manul-big-button {
-  background-image: url("https://sun1.48276.userapi.com/K9JvvS0K-EeaU4NVDcYEyMcVkckw4IUyr41iqg/OyOU3GnLyuw.jpg");
+    background-image: url('https://sun1.48276.userapi.com/K9JvvS0K-EeaU4NVDcYEyMcVkckw4IUyr41iqg/OyOU3GnLyuw.jpg');
 }
 
 .manul-mother-button {
-  background: center/120%
-    url("https://sun9-44.userapi.com/FciQa84-JlPLkxtC2GCq-vPpqEU3V_0CsHCjRw/h9VQSpc7m8A.jpg");
+    background: center/120%
+        url('https://sun9-44.userapi.com/FciQa84-JlPLkxtC2GCq-vPpqEU3V_0CsHCjRw/h9VQSpc7m8A.jpg');
 }
 
 .manul-father-button {
-  background: center/120%
-    url("https://sun9-69.userapi.com/impf/SLJgRTuF7PJ8HXDqMX0_e3aVNJrNY00KkM1m2g/0CHeD_y8OF4.jpg?size=630x420&quality=96&proxy=1&sign=8ea7faa5e18b480e0c91e7704600715b");
+    background: center/120%
+        url('https://sun9-69.userapi.com/impf/SLJgRTuF7PJ8HXDqMX0_e3aVNJrNY00KkM1m2g/0CHeD_y8OF4.jpg?size=630x420&quality=96&proxy=1&sign=8ea7faa5e18b480e0c91e7704600715b');
 }
 
 .manul-grandma-button {
-  background: center/120%
-    url("https://sun9-75.userapi.com/impg/LMLS1NGyspV9b0Wfm8W7w0wiiRPK1Wu0kP_5Vw/tOWC7bIH5W4.jpg?size=1200x877&quality=96&proxy=1&sign=71d551c054f3b7c6bc1d86406903b542");
+    background: center/120%
+        url('https://sun9-75.userapi.com/impg/LMLS1NGyspV9b0Wfm8W7w0wiiRPK1Wu0kP_5Vw/tOWC7bIH5W4.jpg?size=1200x877&quality=96&proxy=1&sign=71d551c054f3b7c6bc1d86406903b542');
 }
 
 .manul-grandpa-button {
-  background: center/120%
-    url("https://ru0.anyfad.com/items/2019/11/9dd7ec44-dikiy-kot-manul-kotvmesto-sobaki.jpg");
+    background: center/120%
+        url('https://ru0.anyfad.com/items/2019/11/9dd7ec44-dikiy-kot-manul-kotvmesto-sobaki.jpg');
 }
 
 .father_progressbar {
-  margin-top: 3px;
-  display: flex;
-  justify-content: center;
+    margin-top: 3px;
+    display: flex;
+    justify-content: center;
 }
 
 .grandpa_progressbar {
-  margin-top: 3px;
-  display: flex;
-  justify-content: center;
+    margin-top: 3px;
+    display: flex;
+    justify-content: center;
 }
 
 .grandpa_prog {
 }
 
 #father_click_value {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 #grandpa_click_value {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 #main-tab {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  flex-flow: column;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
 }
 
 .buttons {
-  display: flex;
-  margin-top: 10px;
+    display: flex;
+    margin-top: 10px;
 }
 
 h1 {
-  margin-bottom: 0;
-  text-align: center;
+    margin-bottom: 0;
+    text-align: center;
 }
 
 .border {
-  border-bottom: 2px solid black;
+    border-bottom: 2px solid black;
 }
 
 .tab-selector {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  height: 60px;
-  width: 100%;
-  border-bottom: 2px solid black;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    height: 60px;
+    width: 100%;
+    border-bottom: 2px solid black;
 }
 
 .tab-select {
-  width: 120px !important;
-  height: 40px !important;
-  margin-left: 10px;
+    width: 120px !important;
+    height: 40px !important;
+    margin-left: 10px;
 }
 
 .manul-button {
-  width: 300px;
-  height: 50px;
-  border: 2px solid black;
-  margin-bottom: 5px;
+    width: 300px;
+    height: 50px;
+    border: 2px solid black;
+    margin-bottom: 5px;
 }
 
 .error {
-  animation: test 0.2s;
+    animation: test 0.2s;
 }
 
 @keyframes test {
-  0% {
-    background-color: red;
-  }
-  10% {
-    background-color: rgba(255, 0, 0, 0.5);
-  }
-  100% {
-    background-color: white;
-  }
+    0% {
+        background-color: red;
+    }
+    10% {
+        background-color: rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        background-color: white;
+    }
 }
 
 .click-effect:active {
-  opacity: 0.9;
-  padding-top: 3px;
+    opacity: 0.9;
+    padding-top: 3px;
 }
 
 .list {
-  list-style: none;
-  padding: 0;
+    list-style: none;
+    padding: 0;
 }
 
 .tooltip {
-  position: fixed;
-  border: 2px solid black;
-  background-color: #efefef;
-  padding: 15px;
-  width: 200px;
+    position: fixed;
+    border: 2px solid black;
+    background-color: #efefef;
+    padding: 15px;
+    width: 200px;
+}
+
+.red {
+    background-color: rgba(255, 0, 0, 0.5);
 }
