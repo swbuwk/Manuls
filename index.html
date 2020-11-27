@@ -16,6 +16,9 @@
                 <button class="tab-select manul-button click-effect" name="click-upgrades-tab">
                     В апгрейды
                 </button>
+                <button class="tab-select manul-button click-effect" name="settings-tab">
+                    К настройкам
+                </button>
             </div>
 
             <h1>
@@ -48,7 +51,7 @@
                             class="bigbutton manul-mother-button click-effect hidden"
                             id="manuls_mother"
                         ></button>
-                        <div class="father hidden">
+                        <div class="hidden" id="father">
                             <button
                                 class="bigbutton manul-father-button click-effect"
                                 id="manuls_father"
@@ -62,7 +65,7 @@
                             class="bigbutton manul-grandma-button click-effect hidden"
                             id="manuls_grandma"
                         ></button>
-                        <div class="granddad hidden">
+                        <div class="hidden" id="granddad">
                             <button
                                 class="bigbutton manul-grandpa-button click-effect"
                                 id="manuls_grandpa"
@@ -91,6 +94,19 @@
                 <span id="clicks-to-gold-manul">1 Золотой манул = 100 кликов</span>
 
                 <div id="special-upgrades-list" class="list"></div>
+            </div>
+
+            <div id="settings-tab" class="tab hidden centrify">
+                <button id="save-button" class="manul-button click-effect">Сохранить игру!</button>
+                <button id="get-save-button" class="manul-button click-effect">
+                    Получить код сохранения
+                </button>
+                <button id="load-save-button" class="manul-button click-effect">
+                    Загрузить сохранение
+                </button>
+                <button id="delete-save-button" class="manul-button click-effect red">
+                    Удалить сохранение
+                </button>
             </div>
         </div>
         <script src="main.js"></script>
