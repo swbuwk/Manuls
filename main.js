@@ -45,6 +45,15 @@ class Game {
         this.golden_manuls_display = document.querySelector('#golden_manuls');
         this.clicks_to_gold_manul_display = document.querySelector('#clicks-to-gold-manul');
 
+        this.save_slot = 'manuls-save';
+        this.main_buttons_visibility = [
+            { id: 'main-button', hidden: false },
+            { id: 'manuls_mother', hidden: true },
+            { id: 'father', hidden: false },
+            { id: 'manuls_grandma', hidden: true },
+            { id: 'granddad', hidden: true },
+        ];
+
         this.special_upgrades = [
             {
                 name: 'Улучшение папы манулов',
@@ -70,15 +79,15 @@ class Game {
                     if (this.price === 3) {
                         game.clicks_to_gold_manul = 75;
                         this.price += this.price_incr;
-                        document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+                        game.hide_tooltip();
                         this.desc =
                             'Теперь золотой манул будет даваться раз в 50 кликов (Можно купить 1 раз)';
                         game.update_counter();
                     } else {
                         game.clicks_to_gold_manul = 50;
                         game.update_counter();
-                        document.querySelector('#golden_manuls_up').remove();
-                        document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+                        game.toggle_hide('golden_manuls_up');
+                        game.hide_tooltip();
                     }
                 },
             },
@@ -95,14 +104,14 @@ class Game {
                     if (this.price === 5) {
                         game.grandma_power = 0.0005;
                         this.price += this.price_incr;
-                        document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+                        game.hide_tooltip();
                         this.desc =
                             'Бабушка манулов будет увеличивать процент не на 0.05%, а на 0.1% (Можно купить 1 раз)';
                         game.update_counter();
                     } else {
                         game.grandma_power = 0.001;
-                        document.querySelector('#grandma_golden_up').remove();
-                        document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+                        game.toggle_hide('grandma_golden_up');
+                        game.hide_tooltip();
                     }
                 },
             },
@@ -145,14 +154,17 @@ class Game {
                 click_handler(game) {
                     const button = document.querySelector('#manuls_mother');
                     button.onclick = game.mother_click.bind(game);
-                    button.classList.remove('hidden');
-                    game.mother_power_display.classList.remove('hidden');
+
+                    game.toggle_hide(button);
+                    game.toggle_hide(game.mother_power_display);
+
                     const upgrade_button = document.querySelector('#mom');
-                    if (game.upgrades.find((el) => el.id === 'dad').hidden === false) {
-                        document.querySelector('#mom_power').classList.remove('hidden');
+
+                    if (!game.upgrades.find((up) => up.id === 'dad').hidden) {
+                        game.toggle_hide('mom_power');
                     }
-                    upgrade_button.remove();
-                    document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+                    game.toggle_hide(upgrade_button);
+                    game.hide_tooltip();
                 },
             },
             {
@@ -169,7 +181,6 @@ class Game {
                     game.update_counter();
                 },
             },
-
             {
                 name: 'Папа манулов',
                 price: 1000000,
@@ -179,28 +190,23 @@ class Game {
                 hidden: false,
                 id: 'dad',
                 click_handler(game) {
-                    const button = document.querySelector('.father');
+                    const button = document.querySelector('#father');
                     button.onclick = game.father_click.bind(game);
-                    button.classList.remove('hidden');
-                    document.querySelector('#plusone').remove();
-                    document.querySelector('#plusten').remove();
-                    document.querySelector('#tab-selector').classList.remove('hidden');
 
-                    document.querySelector('#dad').classList.add('hidden');
-                    game.upgrades.find((el) => el.id === 'dad').hidden = true;
+                    game.toggle_hide(button);
 
-                    document.querySelector('#grandma').classList.remove('hidden');
-                    game.upgrades.find((el) => el.id === 'grandma').hidden = false;
+                    game.toggle_hide('plusone');
+                    game.toggle_hide('plusten');
 
-                    game.upgrades.find((el) => el.id === 'mom_power').hidden = true;
-                    if (game.upgrades.find((el) => el.id === 'mom_power').hidden === true) {
-                        document.querySelector('#mom_power').classList.add('hidden');
-                    }
+                    game.toggle_hide('tab-selector');
 
-                    document.querySelector('#grandpa').classList.remove('hidden');
-                    game.upgrades.find((el) => el.id === 'grandpa').hidden = false;
+                    game.toggle_hide('dad');
+
+                    game.toggle_hide('grandma');
+                    game.toggle_hide('grandpa');
+
                     this.total_clicks = 0;
-                    document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+                    game.hide_tooltip();
                     game.update_counter();
                 },
             },
@@ -215,16 +221,18 @@ class Game {
                 click_handler(game) {
                     const button = document.querySelector('#manuls_grandma');
                     button.onclick = game.grandma_click.bind(game);
-                    button.classList.remove('hidden');
-                    game.father_power_display.classList.remove('hidden');
+
+                    game.toggle_hide(button);
+
+                    game.toggle_hide(game.father_power_display);
+
                     const upgrade_button = document.querySelector('#grandma');
-                    document.querySelector('#grandma_golden_up').classList.remove('hidden');
+                    game.toggle_hide('grandma_golden_up');
 
-                    document.querySelector('#mom_selfpower').classList.remove('hidden');
-                    game.upgrades.find((el) => el.id === 'mom_selfpower').hidden = false;
+                    game.toggle_hide('mom_selfpower');
 
-                    upgrade_button.remove();
-                    document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+                    game.toggle_hide(upgrade_button);
+                    game.hide_tooltip();
                     game.update_counter();
                 },
             },
@@ -237,13 +245,16 @@ class Game {
                 hidden: true,
                 id: 'grandpa',
                 click_handler(game) {
-                    const button = document.querySelector('.granddad');
+                    const button = document.querySelector('#granddad');
                     button.onclick = game.grandpa_click.bind(game);
-                    button.classList.remove('hidden');
-                    game.grandpa_buff_display.classList.remove('hidden');
+
+                    game.toggle_hide(button);
+
+                    game.toggle_hide(game.grandpa_buff_display);
+
                     const upgrade_button = document.querySelector('#grandpa');
-                    upgrade_button.remove();
-                    document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+                    game.toggle_hide(upgrade_button);
+                    game.hide_tooltip();
                     game.update_counter();
                 },
             },
@@ -259,8 +270,7 @@ class Game {
                     document.querySelector('#manuls_mother').onclick = game.mother_click_new.bind(
                         game
                     );
-                    document.querySelector('#mom_selfpower').classList.add('hidden');
-                    game.upgrades.find((el) => el.id === 'mom_selfpower').hidden = true;
+                    game.toggle_hide('mom_selfpower');
                     game.update_counter();
                 },
             },
@@ -269,10 +279,11 @@ class Game {
                 price: 1e100,
                 desc: '"Тсс... это секрет.."',
                 currency: 'манулов',
+                hidden: false,
                 id: 'manulogeddon',
                 click_handler(game) {
                     game.super_manuls++;
-                    document.querySelector('#super_manuls').classList.remove('hidden');
+                    game.toggle_hide('super_manuls');
                     game.update_counter();
                 },
             },
@@ -300,6 +311,27 @@ class Game {
             if (2 <= n % 10 && n % 10 < 5) return endings.two;
         }
         return endings.many;
+    }
+
+    toggle_hide(id) {
+        switch (typeof id) {
+            case 'string':
+                document.querySelector(`#${id}`).classList.toggle('hidden');
+                const up = this.upgrades.find((el) => el.id === id);
+                if (up) {
+                    up.hidden = !up.hidden;
+                }
+                break;
+            case 'object':
+                id.classList.toggle('hidden');
+                break;
+            default:
+                break;
+        }
+    }
+
+    hide_tooltip() {
+        document.querySelectorAll('.tooltip').forEach((t) => t.remove());
     }
 
     update_counter() {
@@ -415,23 +447,24 @@ class Game {
         button.innerText = `${upgrade.name}
             Цена: ${this.normalize_number(upgrade.price)} ${upgrade.currency}`;
         button.classList.add('manul-button', 'click-effect');
-        if (upgrade.hidden) button.classList.add('hidden');
+        if (upgrade.hidden) {
+            this.toggle_hide(button);
+        }
         button.setAttribute('id', `${upgrade.id}`);
 
         button.onmouseover = () => {
             const tooltip = document.createElement('div');
             tooltip.className = 'tooltip';
             const buttonRect = button.getBoundingClientRect();
-            const x = buttonRect.x;
-            const y = buttonRect.y;
+            const { x, y, width } = buttonRect;
             tooltip.innerHTML = upgrade.desc;
-            tooltip.style.left = `${buttonRect.width + x + 2}px`;
+            tooltip.style.left = `${width + x + 2}px`;
             tooltip.style.top = `${y}px`;
             document.body.appendChild(tooltip);
         };
 
         button.onmouseout = () => {
-            document.querySelectorAll('.tooltip').forEach((t) => t.remove());
+            this.hide_tooltip();
         };
 
         button.onclick = () => {
@@ -462,7 +495,7 @@ class Game {
                 }, 200);
             }
         };
-        li.appendChild(button); // крч думаю при лоаде добавить иф чтобы все с  dхиддаc смотри
+        li.appendChild(button);
         return li;
     }
 
@@ -490,7 +523,7 @@ class Game {
         document.querySelectorAll('.tab-select').forEach((button) => {
             button.onclick = () => {
                 document.querySelectorAll('.tab').forEach((div) => {
-                    if (div.id == button.name) {
+                    if (div.id === button.name) {
                         div.classList.remove('hidden');
                     } else {
                         div.classList.add('hidden');
@@ -499,11 +532,111 @@ class Game {
             };
         });
 
+        if (localStorage.getItem(this.save_slot) !== null) {
+            this.loadSave();
+        }
+
         this.update_counter();
+
+        document.querySelector('#save-button').onclick = () => {
+            // сохранить по нажатии кнопки в меню
+            this.save();
+        };
+
+        document.querySelector('#load-save-button').onclick = () => {
+            const data = prompt('Введите код сохранения:');
+            this.loadSave(data);
+        };
+
+        document.querySelector('#get-save-button').onclick = () => {
+            prompt('Код вашего сохранения:', mygame.save(false));
+        };
+
+        document.querySelector('#delete-save-button').onclick = () => {
+            if (
+                confirm('Вы собираетесь удалить свое сохранение, подтвердить?') &&
+                confirm('Вы уверены? Прогресс в игре полностью потеряется!')
+            ) {
+                localStorage.removeItem(this.save_slot);
+                location.reload();
+            }
+        };
+
+        setInterval(() => {
+            this.save();
+        }, 1000 * 60);
+    }
+
+    update_upgrades() {
+        this.upgrades
+            .concat(this.special_upgrades)
+            .concat(this.main_buttons_visibility)
+            .forEach((upgrade) => {
+                upgrade.hidden
+                    ? document.querySelector(`#${upgrade.id}`).classList.add('hidden')
+                    : document.querySelector(`#${upgrade.id}`).classList.remove('hidden');
+            });
+
+        if (!this.main_buttons_visibility.find((el) => el.id === 'father').hidden) {
+            this.toggle_hide(document.querySelector('#tab-selector'));
+        }
+    }
+
+    save(should_write = true) {
+        // сериализовать все данные игры в JSON
+        const data = JSON.stringify(mygame, (key, val) => {
+            // пропускать все поля, которые не нужно сохранять (нечисловые поля),
+            // сериализовать массивы апгрейдов
+            return Array.isArray(val)
+                ? JSON.stringify(val.map((el) => el.hidden))
+                : !key || typeof val === 'number'
+                ? val
+                : undefined;
+        });
+        // зашифровать сохранение
+        const encoded = btoa(data);
+        // добавить все в localStorage
+        if (should_write) {
+            localStorage.setItem(this.save_slot, encoded);
+        }
+        // вернуть данные на всякий случай
+        return encoded;
+    }
+
+    loadSave(save) {
+        // получить сейв из localStorage либо из параметров функции
+        save = save || localStorage.getItem(this.save_slot);
+        console.log(save);
+        // расшифровать сохранение
+        try {
+            const decoded = atob(save);
+            console.log(decoded);
+            // распарсить его из JSON
+            const data = JSON.parse(decoded, (key, val) => {
+                console.log(key, val, typeof val);
+                if (typeof val === 'string') {
+                    return JSON.parse(val).map((is_hidden, i) => {
+                        this[key][i].hidden = is_hidden;
+                        return this[key][i];
+                    });
+                }
+                return val;
+            });
+            // загрузить данные в объект игры, перезаписав существующие значения
+            // значениями из сохранения
+            Object.assign(this, data);
+            // обновить данные на экране, отображая актуальные данные.
+            this.update_counter();
+            this.update_upgrades();
+        } catch (e) {
+            alert('Ошибка при загрузке сохранения.');
+            console.error(e);
+        }
     }
 }
 
 const mygame = new Game();
+mygame.manuls = 1e100;
 
 window.onload = () => {
     mygame.load();
