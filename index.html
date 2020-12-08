@@ -9,11 +9,15 @@
 
     <body>
         <div class="centrify">
-            <div class="tab-selector hidden" id="tab-selector">
+            <div class="tab-selector" id="tab-selector">
                 <button class="tab-select manul-button click-effect" name="main-tab">
                     На главную
                 </button>
-                <button class="tab-select manul-button click-effect" name="click-upgrades-tab">
+                <button
+                    class="tab-select manul-button click-effect hidden"
+                    name="click-upgrades-tab"
+                    id="special-upgrades"
+                >
                     В апгрейды
                 </button>
                 <button class="tab-select manul-button click-effect" name="settings-tab">
@@ -97,6 +101,7 @@
             </div>
 
             <div id="settings-tab" class="tab hidden centrify">
+                <button id="music-button" class="manul-button click-effect">Включить/Выключить музыку</button>
                 <button id="save-button" class="manul-button click-effect">Сохранить игру!</button>
                 <button id="get-save-button" class="manul-button click-effect">
                     Получить код сохранения
@@ -110,5 +115,7 @@
             </div>
         </div>
         <script src="main.js"></script>
+        <audio src="click.mp3" id="bg-audio" ></audio>
+        <audio src="manulogeddon.mp3" id="manulogeddon-audio" ></audio>
     </body>
 </html>
