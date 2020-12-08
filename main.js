@@ -171,9 +171,10 @@ class Game {
                 click_handler(game) {
                     game.toggle_hide(document.querySelector('#manuls_mother'), false);
                     game.toggle_hide(game.mother_power_display, false);
+                    game.toggle_hide('mom_power', false);
 
                     const upgrade_button = document.querySelector('#mom');
-                    if (!game.upgrades.find(up => up.id === 'dad').hidden) {
+                    if (game.upgrades.find(up => up.id === 'dad').hidden) {
                         game.toggle_hide('mom_power', true);
                     }
                     console.log(upgrade_button);
@@ -327,8 +328,8 @@ class Game {
                     this.special_upgrades.find(el => el.id === id_or_obj) ||
                     this.main_buttons_visibility.find(el => el.id === id_or_obj) ||
                     this.text_visibility.find(el => el.id === id_or_obj);
-
-                console.log('UPDATE OR BUTTON:', up);
+                
+                
 
                 if (up) {
                     up.hidden = state;
