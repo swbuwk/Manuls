@@ -21,12 +21,14 @@ class Game {
         this.mother_power = 1;
         this.golden_manuls = 0;
         this.father_power = 0.1;
-        this.grandma_power = 0.0002;
+        this.grandma_power = 0.0005;
         this.clicks_to_gold_manul = 100;
         this.grandpa_hasBuff = 0;
         this.grandpa_buff_x = 1;
         this.grandpa_buff_dur = 250;
         this.music_playing = true
+        this.father_progress_max=100
+        this.super_manuls_buff = 1;
 
         this.manuls_endings = {
             one: 'манулов',
@@ -80,15 +82,15 @@ class Game {
                 price: 1,
                 id: 'father_gold_up',
                 click_handler(game) {
-                    game.father_progressbar.max = Math.max(10, game.father_progressbar.max - 2);
-                    game.father_progress_display.innerText = `${game.father_progressbar.value}/${game.father_progressbar.max}`;
+                    game.father_progress_max = Math.max(10, game.father_progress_max - 2);
+                    game.father_progress_display.innerText = `${game.father_progressbar.value}/${game.father_progress_max}`;
                 },
             },
             {
                 name: 'Улучшение добычи золотых манулов',
                 currency: 'золотых манулов',
                 hidden: false,
-                desc: 'Теперь золотой манул будет даваться раз в 75 кликов (Можно купить 2 раза)',
+                desc: 'Теперь золотой манул будет даваться раз в 75 кликов (Можно купить 3 раза)',
                 price: 3,
                 price_incr: 4,
                 id: 'golden_manuls_up',
@@ -98,12 +100,19 @@ class Game {
                         this.price += this.price_incr;
                         game.hide_tooltip();
                         this.desc =
-                            'Теперь золотой манул будет даваться раз в 50 кликов (Можно купить 1 раз)';
+                            'Теперь золотой манул будет даваться раз в 50 кликов (Можно купить 2 раза)';
                         game.update_counter();
-                    } else {
+                    } else if (this.price === 7) {
+                        this.price=20;
                         game.clicks_to_gold_manul = 50;
                         game.update_counter();
+                        game.hide_tooltip();
+                        this.desc =
+                            'Теперь золотой манул будет даваться раз в 25 кликов!!! (Можно купить 1 раз)';
+                    } else {
                         game.toggle_hide('golden_manuls_up', true);
+                        game.clicks_to_gold_manul = 25;
+                        game.update_counter();
                         game.hide_tooltip();
                     }
                 },
@@ -113,20 +122,20 @@ class Game {
                 currency: 'золотых манулов',
                 hidden: true,
                 desc:
-                    'Бабушка манулов будет увеличивать процент не на 0.02%, а на 0.05% (Можно купить 2 разa)',
+                    'Бабушка манулов будет увеличивать процент не на 0.05%, а на 0.1% (Можно купить 2 разa)',
                 price: 5,
                 price_incr: 10,
                 id: 'grandma_golden_up',
                 click_handler(game) {
                     if (this.price === 5) {
-                        game.grandma_power = 0.0005;
+                        game.grandma_power = 0.001;
                         this.price += this.price_incr;
                         game.hide_tooltip();
                         this.desc =
-                            'Бабушка манулов будет увеличивать процент не на 0.05%, а на 0.1% (Можно купить 1 раз)';
+                            'Бабушка манулов будет увеличивать процент не на 0.1%, а на 0.25% (Можно купить 1 раз)';
                         game.update_counter();
                     } else {
-                        game.grandma_power = 0.001;
+                        game.grandma_power = 0.0025;
                         game.toggle_hide('grandma_golden_up', true);
                         game.hide_tooltip();
                     }
@@ -225,7 +234,7 @@ class Game {
             },
             {
                 name: 'Бабушка манулов',
-                price: 1e25,
+                price: 1e20,
                 desc:
                     'Улучшает папу манулов, повышая процент отдаваемых им манулов (Можно купить 1 раз)',
                 currency: 'манулов',
@@ -287,10 +296,30 @@ class Game {
                 hidden: false,
                 id: 'manulogeddon',
                 click_handler(game) {
-                    game.super_manuls++;
+                    this.desc =
+                            'Генерируют dead inside манулов, которые баффают всех остальных манулов в сотни раз!';
+                    this.price=this.price*1e10
+                    game.super_manuls+=1;
+                    game.super_manuls_buff=game.super_manuls*100
+                    game.toggle_hide('manul_end', false);
                     game.toggle_hide('super_manuls', false);
                     game.update_counter();
+                    if (game.super_manuls===1) {
                     document.getElementById("manulogeddon-audio").play();
+                    }
+                },
+            },
+            {
+                name: 'Конец манулов',
+                price: 1e308,
+                desc: '"Настоящий секрет..."',
+                currency: 'манулов',
+                hidden: true,
+                id: 'manul_end',
+                click_handler(game) {
+                    game.loadSave('eyJtYW51bHMiOjAsInN1cGVyX21hbnVscyI6MCwidG90YWxfY2xpY2tzIjowLCJtYW51bHNfcGVyX2NsaWNrIjoxLCJtb3RoZXJfcG93ZXIiOjEsImdvbGRlbl9tYW51bHMiOjAsImZhdGhlcl9wb3dlciI6MC4xLCJncmFuZG1hX3Bvd2VyIjowLjAwMDUsImNsaWNrc190b19nb2xkX21hbnVsIjoxMDAsImdyYW5kcGFfaGFzQnVmZiI6MCwiZ3JhbmRwYV9idWZmX3giOjEsImdyYW5kcGFfYnVmZl9kdXIiOjI1MCwibXVzaWNfcGxheWluZyI6dHJ1ZSwiZmF0aGVyX3Byb2dyZXNzX21heCI6MTAwLCJzdXBlcl9tYW51bHNfYnVmZiI6MSwibWFpbl9idXR0b25zX3Zpc2liaWxpdHkiOiJbZmFsc2UsdHJ1ZSx0cnVlLHRydWUsdHJ1ZV0iLCJ0ZXh0X3Zpc2liaWxpdHkiOiJbdHJ1ZSxmYWxzZSxmYWxzZSx0cnVlLHRydWUsdHJ1ZV0iLCJzcGVjaWFsX3VwZ3JhZGVzIjoiW2ZhbHNlLGZhbHNlLHRydWVdIiwidXBncmFkZXMiOiJbZmFsc2UsZmFsc2UsZmFsc2UsdHJ1ZSxmYWxzZSx0cnVlLHRydWUsdHJ1ZSxmYWxzZSx0cnVlXSJ9')
+                    document.querySelector('#main-button').classList.remove('manul-big-button')
+                    document.querySelector('#main-button').classList.add('manul-big-button-new')
                 },
             },
         ];
@@ -411,6 +440,7 @@ class Game {
         } else {
             golden_manuls_ending = this.golden_manuls_endings.many;
         }
+        this.father_progress_display.innerText = `${this.father_progressbar.value}/${this.father_progress_max}`;
         this.manuls_display.innerHTML = `У вас ${normalized_manuls} ${manuls_ending}`;
         this.super_manuls_display.innerHTML = `У вас ${normalized_super_manuls} dead inside ${super_manuls_ending}`;
         this.manuls_per_click_display.innerHTML = `Манулов за клик: ${normalized_manuls_per_click}`;
@@ -433,25 +463,25 @@ class Game {
 
     mother_click_new() {
         this.gold_manuls_check();
-        this.mother_power++;
+        this.mother_power+=1*this.super_manuls_buff;
         this.update_counter();
     }
 
     father_click() {
         this.gold_manuls_check();
+        this.father_progressbar.max=this.father_progress_max
         this.father_progressbar.value++;
-        if (this.father_progressbar.value === this.father_progressbar.max) {
-            this.manuls_per_click += this.father_power * this.manuls * this.grandpa_buff_x;
+        if (this.father_progressbar.value === this.father_progress_max) {
+            this.manuls_per_click += this.father_power * this.manuls * this.grandpa_buff_x * this.super_manuls_buff;
             this.manuls = 0;
             this.father_progressbar.value = 0;
         }
-        this.father_progress_display.innerText = `${this.father_progressbar.value}/${this.father_progressbar.max}`;
 
         this.update_counter();
     }
 
     grandma_click() {
-        this.father_power += this.grandma_power * this.grandpa_buff_x;
+        this.father_power += this.grandma_power * this.grandpa_buff_x * this.super_manuls_buff;
         this.gold_manuls_check();
         this.update_counter();
     }
@@ -465,7 +495,7 @@ class Game {
         if (this.grandpa_progressbar.value === this.grandpa_progressbar.max) {
             this.grandpa_buff_dur = 250;
             this.grandpa_hasBuff = 1;
-            this.grandpa_buff_x = this.golden_manuls * 0.5 * (1 + this.mother_power * 0.01);
+            this.grandpa_buff_x = this.golden_manuls * 0.5 * (1 + this.mother_power * 0.01) * this.super_manuls_buff;
             this.grandpa_progressbar.value = 0;
         }
         this.grandpa_progress_display.innerText = `${this.grandpa_progressbar.value}/${this.grandpa_progressbar.max}`;
@@ -541,7 +571,7 @@ class Game {
 
         document.querySelector('#main-button').onclick = () => {
             this.gold_manuls_check();
-            this.manuls += this.manuls_per_click * this.grandpa_buff_x;
+            this.manuls += this.manuls_per_click * this.grandpa_buff_x * this.super_manuls_buff;
             this.update_counter();
         };
 
@@ -572,8 +602,6 @@ class Game {
         if (localStorage.getItem(this.save_slot) !== null) {
             this.loadSave();
         }
-
-        this.update_counter();
 
         document.querySelector('#music-button').onclick = () => {
             const audio = document.getElementById("bg-audio");
@@ -609,6 +637,7 @@ class Game {
             }
         };
         
+        this.update_counter();
 
         setInterval(() => {
             this.save();
@@ -693,8 +722,6 @@ function autoPlay() {
 window.onload = () => {
 
     document.addEventListener('click', autoPlay);
-
-    
     mygame.load(); // 698 строка 😈😈😈😈😈😈😈😈 я сука
 };
 
