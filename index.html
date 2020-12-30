@@ -20,13 +20,23 @@
                 >
                     Специальные апгрейды
                 </button>
+                <button
+                    class="tab-select manul-button click-effect hidden"
+                    name="god-upgrades-tab"
+                    id="god-upgrades"
+                >
+                    Божественные апгрейды
+                </button>
+                <button class="tab-select manul-button click-effect" name="achievements-tab">
+                    Достижения
+                </button>
                 <button class="tab-select manul-button click-effect" name="settings-tab">
                     Настройки
                 </button>
             </div>
 
             <h1>
-                <div id="super_manuls" class="hidden">У вас 0 dead inside манулов</div>
+                <div id="super_manuls" class="hidden">У вас 0 супер манулов</div>
                 <div id="manuls">У вас 0 манулов</div>
                 <div id="manuls_per_click">Манулов за клик: 1</div>
                 <div id="mother_power" class="hidden">Сила мамы манулов: 1</div>
@@ -100,6 +110,24 @@
                 <div id="special-upgrades-list" class="list"></div>
             </div>
 
+            <div id="god-upgrades-tab" class="tab hidden centrify">
+                <h1>
+                    <span id="god_manuls">У вас 0 Мега манулов</span>
+                </h1>
+                <span>Мега манулы даются за манулирование вселеной.</span>
+                <span>1 Мега манул - х10, 2 Мега манула - х100 и т.д.</span>
+                <span>(В разработке)</span>
+
+                <div id="special-upgrades-list" class="list"></div>
+            </div>
+
+            <div id="achievements-tab" class="tab hidden centrify" style="width: 100%;">
+                <h1 style="width: 100%; margin-bottom: 40px;">Достижения</h1>
+                <span>За выполнение всех достижений вы получите уникальный скин!</span>
+                <span>(Если вы намерены получить скин, советуем сразу ознакомиться с достижениями)</span>
+                <div id="achievements-start"></div>
+            </div>
+
             <div id="settings-tab" class="tab hidden centrify">
                 <button id="music-button" class="manul-button click-effect">Включить/Выключить музыку</button>
                 <button id="save-button" class="manul-button click-effect">Сохранить игру!</button>
@@ -112,6 +140,17 @@
                 <button id="delete-save-button" class="manul-button click-effect red">
                     Удалить сохранение
                 </button>
+            </div>
+            <div id="prompt" class="modal hidden">
+                <div id="prompt_bg" class="blackout-bg"></div>
+                <div id="save_window" class="save-window centrify">
+                    <span id="prompt-title"></span>
+                    <!-- ортеил лох 😎-->
+                    <textarea id="save_text_area" class="save-input" style="resize: none"></textarea>
+                    <button id="prompt_confirm" style="margin-top: 10px;"></button> 
+                </div>
+            </div>
+            <div id="notif_creator" style="position: fixed; left: 0; top: 0;">
             </div>
         </div>
         <script src="main.js"></script>

@@ -12,6 +12,7 @@ body {
 }
 
 .centrify {
+  height: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -19,6 +20,7 @@ body {
 
 .bigbutton {
   width: 225px;
+  min-width: 225px;
   height: 180px;
   border: 2px solid black;
   background-size: 100%;
@@ -29,7 +31,7 @@ body {
 }
 
 .manul-big-button {
-  background-image: url("https://sun1.48276.userapi.com/K9JvvS0K-EeaU4NVDcYEyMcVkckw4IUyr41iqg/OyOU3GnLyuw.jpg");
+  background-image: url("https://sun9-30.userapi.com/impg/gZSXdiuiPpeaXftuQB5UNAUJOq-ZhsReyfzAsw/IC8qmzEnWVA.jpg?size=900x751&quality=96&proxy=1&sign=67043456ce4c9a5921b583b3ea9327a4&type=album");
 }
 
 .manul-big-button-new {
@@ -80,7 +82,7 @@ body {
 }
 
 #main-tab {
-  width: 50%;
+  width: 100%;
   display: flex;
   align-items: center;
   flex-flow: column;
@@ -89,6 +91,8 @@ body {
 .buttons {
   display: flex;
   margin-top: 10px;
+  overflow-x: auto;
+  /* width: 100vw; */
 }
 
 h1 {
@@ -156,6 +160,92 @@ h1 {
   width: 200px;
 }
 
+.modal {
+  display: contents; /* ору наугад выбрал и подошло */
+}
+
+.save-window {
+  position: absolute;
+  top: 25%;
+  border: 2px solid black;
+  background-color: #efefef;
+  padding: 15px;
+  width: 275px;
+  height: 350px;
+}
+
+.save-input {
+  width: 259px;
+  height: 310px;
+  margin-top: 10px;
+}
+
+.blackout-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.notification {
+  position: relative;
+  top: 10px;
+  width: 200px;
+  min-height: 40px;
+  margin: 5px;
+  left: 10px;
+  border: 2px solid black;
+  background-color: darkseagreen;
+  padding: 20px;
+  animation: notif-anim 3s;
+}
+
+@keyframes notif-anim {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.achievement {
+  height: 150px;
+  display: inline-block;
+  margin: 5px;
+  border: 3px solid black;
+  background-color: #efefef;
+}
+
+#achievements-start {
+  position: relative;
+  width: 830px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* grid-template-columns: repeat(auto-fill, minmax(50%, 1fr)); */
+}
+
+.achieve-title {
+  font-size: 20px;
+}
+
+.achieve-desc {
+  font-size: 15px;
+}
+
+.achieved {
+  background-color: darkseagreen;
+}
+
 .red {
   background-color: rgba(255, 0, 0, 0.5);
+}
+
+.win {
+  background-image: url("https://sun9-14.userapi.com/impg/k8L_QunGJAvckC0k2DTarwUQhRYDbGEL4kr_2Q/xW3qUwX-NkQ.jpg?size=806x693&quality=96&proxy=1&sign=199781c8f2f27490ca89b9a97dc64df6&type=album");
 }
